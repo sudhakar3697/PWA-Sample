@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,20 +15,16 @@
   <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
   <meta name="msapplication-TileColor" content="#2F3BA2">
 </head>
-<body>
-<h1>Hi everyone</h1>
-<script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', function() {
-    navigator.serviceWorker.register('/sw.js').then(function(registration) {
-      console.log('ServiceWorker registration successful with scope: ', registration.scope);
-    }, function(err) {
-      console.log('ServiceWorker registration failed: ', err);
-    });
-  });
-}
 
-/*
+<body onload="showNotification()">
+  <h1>Hi everyone</h1>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').then(function (registration) {
+          console.log('ServiceWorker registration successful with scope: ', registration.scope);
+
+//start
 var title="hi da";
 var options={
   "body": "Did you make a $1,000,000 purchase at Dr. Evil...",
@@ -39,8 +36,31 @@ var options={
     { "action": "no", "title": "No", "icon": "images/no.png" }
   ]
 };
- serviceWorkerRegistration.showNotification(title, options);
-*/
-</script>
+ registration.showNotification(title, options);
+//end
+
+        }, function (err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      });
+    }
+
+    function showNotification() {
+      // Notification.requestPermission(function (result) {
+      //   if (result === 'granted') {
+      //     navigator.serviceWorker.ready.then(function (registration) {
+      //       registration.showNotification('Vibration Sample', {
+      //         body: 'Buzz! Buzz!',
+      //         icon: '../images/touch/chrome-touch-icon-192x192.png',
+      //         vibrate: [200, 100, 200, 100, 200, 100, 200],
+      //         tag: 'vibration-sample'
+      //       });
+      //     });
+      //   }
+      // });
+    }
+
+  </script>
 </body>
+
 </html>
