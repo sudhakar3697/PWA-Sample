@@ -17,27 +17,34 @@
 </head>
 
 <body>
-  <h1>Hi everyone</h1>
+  <h1>Hi Everyone!</h1>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
         navigator.serviceWorker.register('/sw.js').then(function (registration) {
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
 
-//start
-var title="hi da";
-var options={
-  "body": "Did you make a $1,000,000 purchase at Dr. Evil...",
-  "icon": "images/ccard.png",
-  "vibrate": [200, 100, 200, 100, 200, 100, 400],
-  "tag": "request",
-  "actions": [
-    { "action": "yes", "title": "Yes", "icon": "images/yes.png" },
-    { "action": "no", "title": "No", "icon": "images/no.png" }
-  ]
-};
- registration.showNotification(title, options);
-//end
+          //start
+          Notification.requestPermission(function (result) {
+            console.log("User choice", result);
+            if (result !== "granted") {
+              console.log("No notification permission granted!");
+            } else {
+              let title = "Test Notification";
+              let options = {
+                "body": "Do you like this ?",
+                "icon": "icon.png",
+                "vibrate": [200, 100, 200, 100, 200, 100, 400],
+                "tag": "request",
+                "actions": [
+                  { "action": "yes", "title": "Yes", "icon": "icon.png" },
+                  { "action": "no", "title": "No", "icon": "icon.png" }
+                ]
+              };
+            registration.showNotification(title, options).then(i=>console.log(i));
+            }
+          });
+          //end
 
         }, function (err) {
           console.log('ServiceWorker registration failed: ', err);
