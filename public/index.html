@@ -10,48 +10,43 @@
   <!-- Add to home screen for Safari on iOS -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Weather PWA">
-  <link rel="apple-touch-icon" href="images/icons/icon-152x152.png">
-  <meta name="msapplication-TileImage" content="images/icons/icon-144x144.png">
-  <meta name="msapplication-TileColor" content="#2F3BA2">
+  <meta name="apple-mobile-web-app-title" content="pwa test">
+  <link rel="apple-touch-icon" href="icon.png">
+  <meta name="msapplication-TileImage" content="icon.png">
+  <meta name="msapplication-TileColor" content="#3367D6">
 </head>
 
 <body>
   <h1>Hi Everyone!</h1>
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/sw.js').then(function (registration) {
+    window.addEventListener('load', async () => {
+      if ('serviceWorker' in navigator) {
+        try {
+          const registration = await navigator.serviceWorker.register('/sw.js');
           console.log('ServiceWorker registration successful with scope: ', registration.scope);
-
-          //start
-          Notification.requestPermission(function (result) {
-            console.log("User choice", result);
-            if (result !== "granted") {
-              console.log("No notification permission granted!");
-            } else {
-              let title = "Test Notification";
-              let options = {
-                "body": "Do you like this ?",
-                "icon": "icon.png",
-                "vibrate": [200, 100, 200, 100, 200, 100, 400],
-                "tag": "request",
-                "actions": [
-                  { "action": "yes", "title": "Yes", "icon": "icon.png" },
-                  { "action": "no", "title": "No", "icon": "icon.png" }
-                ]
-              };
-            registration.showNotification(title, options).then(i=>console.log(i));
-            }
-          });
-          //end
-
-        }, function (err) {
-          console.log('ServiceWorker registration failed: ', err);
-        });
-      });
-    }
-
+          const notificationPermission = await Notification.requestPermission();
+          if (notificationPermission !== 'granted') {
+            console.log('Notification permission not granted');
+          } else {
+            const title = 'Test Notification';
+            const options = {
+              body: 'Do you like this ?',
+              icon: 'icon.png',
+              vibrate: [200, 100, 200, 100, 200, 100, 400],
+              tag: 'request',
+              actions: [
+                { action: 'yes', title: 'Yes', icon: 'icon.png' },
+                { action: 'no', title: 'No', icon: 'icon.png' }
+              ]
+            };
+            const res = await registration.showNotification(title, options);
+            console.log(res);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    });
   </script>
 </body>
 
